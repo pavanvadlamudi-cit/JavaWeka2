@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.math.BigDecimal;
 
 import weka.classifiers.functions.LinearRegression;
 import weka.core.Instance;
@@ -94,11 +95,12 @@ public class LinearRegressionPredictor {
 					out.newLine();
 					for (int curInstance = 0; curInstance < n; ++curInstance) {
 						Instance t = data.instance(curInstance);
-						double pred = predictor.classifyInstance(t), act = t
-								.value(m - attributeIndex);
+						double pred = predictor.classifyInstance(t), act = t.value(m - attributeIndex);
+						BigDecimal pred1=new BigDecimal(String.valueOf(pred)).setScale(2, BigDecimal.ROUND_HALF_UP);
+						//difference = act - pred;
+						difference=act - pred1.doubleValue();
+						BigDecimal difference1=new BigDecimal(String.valueOf(difference)).setScale(2, BigDecimal.ROUND_HALF_UP);
 						
-						difference = act - pred;
-
 						rmslepred = (pred < 0 ? 0 : pred);
 						rmsleact = (act < 0 ? 0 : act);
 						// rmsle += (Math.log(pred + 1) - Math.log(act + 1)) *
@@ -112,8 +114,8 @@ public class LinearRegressionPredictor {
 						rmsleZero += Math.log(rmsleact + 1)
 								* Math.log(rmsleact + 1);
 						// difference = act - pred;
-						out.write((curInstance + 1) + "," + act + "," + pred + ","
-								+ difference);
+						out.write((curInstance + 1) + "," + act + "," + pred1.doubleValue() + ","
+								+ difference1);
 						out.newLine();
 
 						// System.out.println(act+":"+pred+":"+rmsle);
@@ -122,7 +124,7 @@ public class LinearRegressionPredictor {
 					out.close();
 					rmsle = Math.sqrt(rmsle / n);
 					rmsleZero = Math.sqrt(rmsleZero / n);
-					System.out.println("Sucessfully written prediction to a file  "
+					System.out.println("Successfully written prediction to a file  "
 							+  outputPath);
 					System.out.println("# of training data: "
 							+ data.numInstances());
