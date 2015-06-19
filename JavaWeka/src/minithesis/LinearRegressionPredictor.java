@@ -33,7 +33,7 @@ public class LinearRegressionPredictor {
 			for (int i = 0; i < listOfFiles.length; i++) {
 				currentAttributeName = null;
 				outputPath = null;
-				if (i>=1) break;
+				
 				File file = listOfFiles[i];
 				if (file.isFile() && file.getName().endsWith(".arff")) {
 					System.out.println(file.getName().replace("arff", "csv"));
@@ -318,7 +318,9 @@ public class LinearRegressionPredictor {
 	public static void main(String[] args) throws Exception {
 
 		String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/";
-		// LinearRegressionPredictorClassifier(datasetpath);
+		System.out.println("------------------------------------------------Linear Regression-----------------------------------------------------------------");
+		LinearRegressionPredictorClassifier(datasetpath);
+		System.out.println("------------------------------------------------Multilayer Perceptron-----------------------------------------------------------------");
 		MultiLayerPerceptroPredictorClassifier(datasetpath);
 		// System.out.println("RMSLE on testing data: " + rmsle);
 		// System.out.println("RMSLE on testing data Zero: " + rmsleZero);
