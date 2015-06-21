@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.Utils;
 
 public class LinearRegressionPredictor {
 	static String arffFolderName = "arff";
@@ -69,6 +71,7 @@ public class LinearRegressionPredictor {
 						mlp.buildClassifier(data);
 						mlp.setGUI(true);
 						mlp.setLearningRate(0.5);
+						mlp.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H 4"));
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -86,6 +89,8 @@ public class LinearRegressionPredictor {
 									.replace("Hourly", "").replace("pro", "");
 						else
 							currentAttributeName = "";
+						//TODO need to remove Month name from Current Attribute if it found...
+						
 						System.out.println(data.attribute(attributeIndex)
 								.name());
 
@@ -160,6 +165,12 @@ public class LinearRegressionPredictor {
 									+ rmsle);
 							System.out.println("RMSLE on testing data Zero: "
 									+ rmsleZero);
+							
+							WriteToOuputSummaryToLog(datasetPath + arffFolderName, String.format (
+									arffFileName+",Multilayer Perceptron,"+currentAttributeName+","+data.numInstances()
+									+","+outputPath+","
+									+rmsle+","+rmsleZero));
+							
 						} catch (Exception e) {// Catch exception if any
 							System.err.println("Error: " + e.getMessage());
 						}
@@ -306,6 +317,10 @@ public class LinearRegressionPredictor {
 						System.out.println("RMSLE on testing data: " + rmsle);
 						System.out.println("RMSLE on testing data Zero: "
 								+ rmsleZero);
+						WriteToOuputSummaryToLog(datasetPath + arffFolderName, String.format (
+								arffFileName+",Linear regression,"+currentAttributeName+","+data.numInstances()
+								+","+outputPath+","
+								+rmsle+","+rmsleZero));
 					} catch (Exception e) {// Catch exception if any
 						System.err.println("Error: " + e.getMessage());
 					}
@@ -314,7 +329,15 @@ public class LinearRegressionPredictor {
 		}
 
 	}
-
+	public static void WriteToOuputSummaryToLog(String filePath,String outputSummary)
+	{
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath+"/"+"output.csv", true)))) {
+		    out.println(outputSummary);
+		}catch (IOException e) {
+		    //exception handling left as an exercise for the reader
+		}
+	}
+	
 	public static void main(String[] args) throws Exception {
 
 		String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/";
@@ -322,6 +345,7 @@ public class LinearRegressionPredictor {
 		LinearRegressionPredictorClassifier(datasetpath);
 		System.out.println("------------------------------------------------Multilayer Perceptron-----------------------------------------------------------------");
 		MultiLayerPerceptroPredictorClassifier(datasetpath);
+		System.out.println("------------------------------------------------Completed-----------------------------------------------------------------");
 		// System.out.println("RMSLE on testing data: " + rmsle);
 		// System.out.println("RMSLE on testing data Zero: " + rmsleZero);
 
