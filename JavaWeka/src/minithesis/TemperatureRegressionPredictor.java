@@ -16,7 +16,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
 
-public class LinearRegressionPredictor {
+public class TemperatureRegressionPredictor {
 	static String arffFolderName = "arff";
 	static String csvFolderName = "csv";
 	static String arffFileName = null;
@@ -28,6 +28,7 @@ public class LinearRegressionPredictor {
 	static String currentAttributeName = null;
 	static String outputPath = null;
 
+	
 	public static void MultiLayerPerceptroPredictorClassifier(String datasetPath) {
 		try {
 			File folder = new File(datasetPath + arffFolderName);
@@ -72,6 +73,7 @@ public class LinearRegressionPredictor {
 						mlp.setGUI(true);
 						mlp.setLearningRate(0.5);
 						mlp.setOptions(Utils.splitOptions("-L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H 4"));
+						
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -118,6 +120,7 @@ public class LinearRegressionPredictor {
 								Instance t = data.instance(curInstance);
 								double pred = mlp.classifyInstance(t), act = t
 										.value(m - attributeIndex);
+								
 								BigDecimal pred1 = new BigDecimal(
 										String.valueOf(pred)).setScale(2,
 										BigDecimal.ROUND_HALF_UP);
