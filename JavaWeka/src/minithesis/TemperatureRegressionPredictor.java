@@ -20,12 +20,12 @@ import weka.core.Instances;
 import weka.core.Utils;
 
 public class TemperatureRegressionPredictor {
-	static String arffFolderName = "source";
-	static String csvFolderName = "output";
+	static String arffFolderName = "arff";
+	static String csvFolderName = "csv";
 	static String arffFileName = null;
 	static String csvFileName = null;
 	static String trainPath;
-	static String predictedOutFileFolderName = "output";
+	static String predictedOutFileFolderName = "csv";
 	static String predictedOutCSVFilename = null;
 
 	static String currentAttributeName = null;
@@ -108,7 +108,7 @@ public class TemperatureRegressionPredictor {
 								Instance t = data.instance(curInstance);
 								double pred = m5p.classifyInstance(t), act = t
 										.value(m - attributeIndex);
-
+								act = (act==0?act=0.0001:act);	
 								BigDecimal pred1 = new BigDecimal(
 										String.valueOf(pred)).setScale(2,
 										BigDecimal.ROUND_HALF_UP);
@@ -123,9 +123,9 @@ public class TemperatureRegressionPredictor {
 											String.valueOf(percentage)).setScale(2,
 											BigDecimal.ROUND_HALF_UP);
 									}
-									if (act==pred) 
+									if (difference1.doubleValue()==0) 
 										percentage1=new BigDecimal(
-												String.valueOf(100)).setScale(2,
+												String.valueOf(0)).setScale(2,
 														BigDecimal.ROUND_HALF_UP);
 								rmslepred = (pred < 0 ? 0 : pred);
 								rmsleact = (act < 0 ? 0 : act);
@@ -268,7 +268,7 @@ public class TemperatureRegressionPredictor {
 								Instance t = data.instance(curInstance);
 								double pred = lms.classifyInstance(t), act = t
 										.value(m - attributeIndex);
-
+								act = (act==0?act=0.0001:act);
 								BigDecimal pred1 = new BigDecimal(
 										String.valueOf(pred)).setScale(2,
 										BigDecimal.ROUND_HALF_UP);
@@ -283,9 +283,9 @@ public class TemperatureRegressionPredictor {
 											String.valueOf(percentage)).setScale(2,
 											BigDecimal.ROUND_HALF_UP);
 									}
-									if (act==pred) 
+									if (difference1.doubleValue()==0) 
 										percentage1=new BigDecimal(
-												String.valueOf(100)).setScale(2,
+												String.valueOf(0)).setScale(2,
 														BigDecimal.ROUND_HALF_UP);
 								rmslepred = (pred < 0 ? 0 : pred);
 								rmsleact = (act < 0 ? 0 : act);
@@ -441,7 +441,7 @@ public class TemperatureRegressionPredictor {
 								Instance t = data.instance(curInstance);
 								double pred = mlp.classifyInstance(t), act = t
 										.value(m - attributeIndex);
-
+								act = (act==0?act=0.0001:act);	
 								BigDecimal pred1 = new BigDecimal(
 										String.valueOf(pred)).setScale(2,
 										BigDecimal.ROUND_HALF_UP);
@@ -459,9 +459,9 @@ public class TemperatureRegressionPredictor {
 											String.valueOf(percentage)).setScale(2,
 											BigDecimal.ROUND_HALF_UP);
 									}
-									if (act==pred) 
+									if (difference1.doubleValue()==0) 
 										percentage1=new BigDecimal(
-												String.valueOf(100)).setScale(2,
+												String.valueOf(0)).setScale(2,
 														BigDecimal.ROUND_HALF_UP);
 								// rmsle += (Math.log(pred + 1) - Math.log(act +
 								// 1))
@@ -618,6 +618,12 @@ public class TemperatureRegressionPredictor {
 							BigDecimal percentage1 = new BigDecimal(0);
 							double pred = predictor.classifyInstance(t), act = t
 									.value(m - attributeIndex);
+							
+							
+							
+							if (act==0) 
+								throw new Exception("Wrong Zero value found in the file."); 
+							act = (act==0?act=0.0001:act);
 							BigDecimal pred1 = new BigDecimal(
 									String.valueOf(pred)).setScale(2,
 									BigDecimal.ROUND_HALF_UP);
@@ -633,9 +639,9 @@ public class TemperatureRegressionPredictor {
 									String.valueOf(percentage)).setScale(2,
 									BigDecimal.ROUND_HALF_UP);
 							}
-							if (act==pred) 
+							if (difference1.doubleValue() == 0) 
 								percentage1=new BigDecimal(
-										String.valueOf(100)).setScale(2,
+										String.valueOf(0)).setScale(2,
 												BigDecimal.ROUND_HALF_UP);
 							rmslepred = (pred < 0 ? 0 : pred);
 							rmsleact = (act < 0 ? 0 : act);
@@ -704,7 +710,8 @@ public class TemperatureRegressionPredictor {
 	public static void main(String[] args) throws Exception {
 
 		//String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/";
-		String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/arff/cgfeedback_30062015/";
+		//String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/arff/cgfeedback_30062015/";
+		String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed_WithoutZeroTempv2/";
 		System.out
 				.println("------------------------------------------------Linear Regression-----------------------------------------------------------------");
 		LinearRegressionPredictorClassifier(datasetpath);
