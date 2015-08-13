@@ -14,10 +14,13 @@ import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.LeastMedSq;
 import weka.classifiers.trees.M5P;
-
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
+/**
+ * @author Pavan Vadlamudi 
+ * 
+ */
 
 public class TemperatureRegressionPredictor {
 	static String arffFolderName = "arff";
@@ -190,8 +193,7 @@ public class TemperatureRegressionPredictor {
 			ex.printStackTrace();
 		}
 	}
-	
-	
+		
 	public static void LeastMedSquareRegressionPredictor(String datasetPath) {
 		try {
 			File folder = new File(datasetPath + arffFolderName);
@@ -711,19 +713,27 @@ public class TemperatureRegressionPredictor {
 
 		//String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/";
 		//String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed/arff/cgfeedback_30062015/";
-		String datasetpath = "C:/CIT/Mini-Thesis/temperatureOnly/Processed_WithoutZeroTempv2/";
+		String datasetpathTemp = "C:/CIT/Mini-Thesis/temperatureOnly/Processed_WithoutZeroTempv2/";
+		String datasetpath ="";
+		GetPropertyValues properties = new GetPropertyValues();
+		datasetpath = properties.getPropValues();
+		if (datasetpath==""){
+			System.out.println("unable to read datasetpath from configuration reverting to default path...");
+			datasetpath=datasetpathTemp;
+		}
+		
 		System.out
 				.println("------------------------------------------------Linear Regression-----------------------------------------------------------------");
-		LinearRegressionPredictorClassifier(datasetpath);
+		//LinearRegressionPredictorClassifier(datasetpath);
 		System.out
 				.println("------------------------------------------------Multilayer Perceptron-----------------------------------------------------------------");
-		MultiLayerPerceptroPredictorClassifier(datasetpath);
+		//MultiLayerPerceptroPredictorClassifier(datasetpath);
 		System.out.println("------------------------------------------------Least Med Square-----------------------------------------------------------------");
 
-		LeastMedSquareRegressionPredictor(datasetpath);
+		//LeastMedSquareRegressionPredictor(datasetpath);
 		System.out.println("------------------------------------------------M5P Tree-----------------------------------------------------------------");
 
-		M5PTreePredictor(datasetpath);
+		//M5PTreePredictor(datasetpath);
 		System.out
 				.println("------------------------------------------------Completed-----------------------------------------------------------------");
 		 //System.out.println("RMSLE on testing data: " + rmsle);
