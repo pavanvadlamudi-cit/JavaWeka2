@@ -36,6 +36,29 @@ public class GetPropertyValues {
 		}
 		return result;
 	}
+	public String getMLOutputPropValues() throws IOException {
+		 
+		try {
+			Properties prop = new Properties();
+			String propFileName = "config.properties";
+ 
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+ 
+			if (inputStream != null) {
+				prop.load(inputStream);
+			} else {
+				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			}
+ 			// get the property value and print it out
+			String datasetpath = prop.getProperty("MLOutput");
+			result=datasetpath;
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} finally {
+			inputStream.close();
+		}
+		return result;
+	}
 }
 
 
